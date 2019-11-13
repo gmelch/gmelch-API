@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fun Facts!</title>
+  <meta charset="utf-8">
+  <script type="text/javascript">
+    function funFact() {
+      var request = new XMLHttpRequest();
+      console.log("1 - request object created");
+
+      var today = new Date();
+      var month = today.getMonth() + 1;
+      var day = today.getDate();
+
+      request.open("GET", ("https://numbersapi.p.rapidapi.com/" + month + "/" + day + "/date?fragment=true&json=true"), true);
+      request.setRequestHeader("x-rapidapi-host", "numbersapi.p.rapidapi.com");
+      request.setRequestHeader("x-rapidapi-key", "8edf4bff39msh651e88e8330f03cp153ffbjsn679bac4d91e1");
+      console.log("2 - opened request file");
+
+      request.onreadystatechange = function() {
+        console.log("3 - readystatechange event fired.");
+
+        if (request.readyState == 4 && request.status == 200) {
+          result = request.responseText;
+          fact = JSON.parse(result);
+          
+          document.getElementById("data").innerHTML ="On this day in " + fact.year + ", " + fact.text + ".";  
+        }
+         else if (request.readyState == 4 && request.status != 200) {
+          document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+        }
+        else if (request.readyState == 3) {
+          document.getElementById("data").innerHTML = "Too soon!  Try again";
+        }
+      }
+      request.send();
+      console.log("4 - Request sent");
+    }
+  </script>
+  <style type="text/css">
+    body {
+      text-align: center;
+      background-color: #EEF2F0;
+      color: #6C6C6C;
+      font-size: 20px;
+    }
+
+    h1 {
+      font-size: 40px;
+    }
+  </style>
+</head>
+<body onload="funFact()">
+
+  <h1>Fun Fact of the Day!</h1>
+  <div id="data">Loading...</div>
+    <br>
+    <br>
+    <p>I used the Numbers API which generates trivia, math, date, and year facts about numbers.</p>
+    <p>I found it at https://rapidapi.com/divad12/api/numbers-1</p>
+    <p> 
+      I used the "Get date fact" option for this API.  
+      This specific option returns a fact based on the date entered.  
+      The program is set up to enter the current date.
+    </p>
+    <p>
+      This API could be used to generate one of those calendars that provides a fun fact related to the date.  
+      The API could also be used in a trivia game app to generate trivia facts by using the "Get trivia fact" option.
+    </p>
+  </div>
+
+</body>
+</html>
